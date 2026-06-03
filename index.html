@@ -647,7 +647,7 @@ footer{background:var(--pitch-2);border-top:1px solid var(--stone-dark);padding:
     <p class="s-label">Mac &amp; mobile</p>
     <h2>Be first to know.</h2>
     <p>Drop your email and we'll reach out when Effro lands on Mac — no noise before then.</p>
-    <form class="wl-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" onsubmit="wlSubmit(event,this)">
+    <form class="wl-form" action="https://formspree.io/f/meewjpkk" method="POST">
       <input class="wl-input" type="email" name="email" placeholder="you@example.com" required/>
       <button class="wl-btn" type="submit">Notify me</button>
     </form>
@@ -698,15 +698,6 @@ footer{background:var(--pitch-2);border-top:1px solid var(--stone-dark);padding:
     const item=btn.closest('.faq-item'),was=item.classList.contains('open')
     document.querySelectorAll('.faq-item.open').forEach(el=>el.classList.remove('open'))
     if(!was)item.classList.add('open')
-  }
-
-  // Waitlist fallback
-  function wlSubmit(e,form){
-    if(form.action.includes('YOUR_FORM_ID')){
-      e.preventDefault()
-      const btn=form.querySelector('.wl-btn'),input=form.querySelector('.wl-input')
-      btn.textContent="You're on the list ✓";btn.style.background='var(--mint-hover)';btn.disabled=true;input.disabled=true
-    }
   }
 
   // Active nav on scroll
