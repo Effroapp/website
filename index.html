@@ -329,6 +329,101 @@ footer{background:var(--pitch-2);border-top:1px solid var(--stone-dark);padding:
 .footer-links a:hover{color:var(--paper-d)}
 .footer-copy{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--stone-dark);text-transform:uppercase}
 
+/* ── Light mode — mirrors the app's token swap ───────────────────── */
+/* When html.light is set, pitch (dark) surfaces become paper (warm white)
+   and paper-d (light text on dark) becomes ink (dark text on light).
+   The mint accent, status palette, and section structure stay identical —
+   exactly how the app's own light mode works. */
+html.light {
+  --pitch:      #FFFFFF;
+  --pitch-2:    #F7F4ED;
+  --pitch-3:    #EFECE3;
+  --stone-dark: #D4CFC2;
+  --paper-d:    #14130F;
+  --paper-sd:   #4A4845;
+  --paper-md:   #8A877F;
+}
+html.light body { background: var(--paper); color: var(--ink); }
+
+/* Nav flips to warm-white glass */
+html.light .nav {
+  background: rgba(247,244,237,.92);
+  border-bottom-color: var(--stone);
+}
+html.light .nav-wm  { color: var(--ink); }
+html.light .nav-links a { color: var(--ink-muted); }
+html.light .nav-links a:hover,
+html.light .nav-links a.active { color: var(--ink); }
+
+/* Grid texture swaps direction in light mode */
+html.light .bg-grid-dark {
+  background-image:
+    linear-gradient(rgba(20,19,15,.022) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(20,19,15,.022) 1px,transparent 1px);
+}
+
+/* Hero radial glows stay mint but now on warm white */
+html.light .hero {
+  background:
+    radial-gradient(ellipse 50% 55% at 100% 0%,rgba(16,185,129,.10) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 40% at 100% 30%,rgba(16,185,129,.05) 0%,transparent 55%),
+    radial-gradient(ellipse 30% 40% at 0% 65%,rgba(16,185,129,.03) 0%,transparent 60%),
+    #FFFFFF;
+}
+html.light .hero h1 { color: var(--ink); }
+html.light .hero-sub { color: var(--ink-soft); }
+html.light .sp { border-top-color: var(--stone); }
+html.light .sp-txt { color: var(--ink-muted); }
+
+/* Sync badge */
+html.light .sync-badge { background: var(--paper); border-color: var(--stone); }
+html.light .s-text { color: var(--ink-muted); }
+
+/* Scroll hint */
+html.light .scroll-hint { color: var(--stone); }
+
+/* Section text on previously-dark sections */
+html.light .fcard h3 { color: var(--ink); }
+html.light .fcard p  { color: var(--ink-soft); }
+html.light .mind-card h3 { color: var(--ink); }
+html.light .mind-card p  { color: var(--ink-soft); }
+html.light .mind-foot { color: var(--ink-muted); }
+html.light .sig-title { color: var(--ink); }
+html.light .sig-meta  { color: var(--ink-muted); }
+html.light .signals-copy .s-title { color: var(--ink); }
+html.light .signals-detail { color: var(--ink-soft); }
+html.light .source-pill { color: var(--ink-soft); border-color: var(--stone); }
+html.light .sig-card { background: var(--paper-2); border-color: var(--stone); }
+html.light .sig-card:hover { border-color: rgba(16,185,129,.4); }
+
+/* Waitlist on light */
+html.light .waitlist-s { background: var(--paper-2); }
+html.light .waitlist-s::before { display: none; }
+html.light .waitlist-inner h2 { color: var(--ink); }
+html.light .waitlist-inner p  { color: var(--ink-soft); }
+html.light .wl-input { background: var(--paper); border-color: var(--stone); color: var(--ink); }
+html.light .wl-note  { color: var(--ink-muted); }
+
+/* Footer */
+html.light footer { background: var(--paper-2); border-top-color: var(--stone); }
+html.light .footer-wm { color: var(--ink); }
+html.light .footer-links a { color: var(--ink-soft); }
+html.light .footer-links a:hover { color: var(--ink); }
+html.light .footer-copy { color: var(--ink-muted); }
+
+/* Theme toggle button */
+.theme-toggle {
+  width: 36px; height: 36px; border-radius: var(--r-md);
+  border: 1px solid var(--stone-dark); background: transparent;
+  color: var(--paper-sd); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color .15s, color .15s, background .15s;
+  flex-shrink: 0;
+}
+.theme-toggle:hover { border-color: var(--paper-sd); color: var(--paper-d); background: rgba(255,255,255,.04); }
+html.light .theme-toggle { border-color: var(--stone); color: var(--ink-muted); }
+html.light .theme-toggle:hover { border-color: var(--ink-muted); color: var(--ink); background: rgba(0,0,0,.04); }
+
 /* ── Responsive ───────────────────────────────────────────────────── */
 @media(max-width:1100px){.hero-inner{grid-template-columns:1fr}.hero-visual{display:none}.signals-inner{grid-template-columns:1fr;gap:48px}.areas-grid{grid-template-columns:1fr}}
 @media(max-width:900px){.feature-grid{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr;gap:36px}.testi-grid{grid-template-columns:1fr}.mind-grid{grid-template-columns:1fr}}
@@ -361,6 +456,12 @@ footer{background:var(--pitch-2);border-top:1px solid var(--stone-dark);padding:
     <li><a href="#signals">Signals</a></li>
     <li><a href="#faq">FAQ</a></li>
   </ul>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode" title="Toggle theme">
+    <!-- Moon shown in dark mode (click to go light) -->
+    <svg id="iconMoon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <!-- Sun shown in light mode (click to go dark) -->
+    <svg id="iconSun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
   <a href="https://github.com/Effroapp/effro/releases/latest" class="nav-cta">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     Download Free
@@ -679,6 +780,33 @@ footer{background:var(--pitch-2);border-top:1px solid var(--stone-dark);padding:
 </footer>
 
 <script>
+  // ── Theme toggle — mirrors the app's dark/light behaviour ───────────
+  const html      = document.documentElement
+  const toggle    = document.getElementById('themeToggle')
+  const iconMoon  = document.getElementById('iconMoon')
+  const iconSun   = document.getElementById('iconSun')
+
+  function setTheme(mode) {
+    if (mode === 'light') {
+      html.classList.add('light')
+      iconMoon.style.display = 'none'
+      iconSun.style.display  = 'block'
+    } else {
+      html.classList.remove('light')
+      iconMoon.style.display = 'block'
+      iconSun.style.display  = 'none'
+    }
+    localStorage.setItem('effro-theme', mode)
+  }
+
+  // Restore saved preference, fall back to dark (matches app default)
+  const saved = localStorage.getItem('effro-theme') || 'dark'
+  setTheme(saved)
+
+  toggle.addEventListener('click', () => {
+    setTheme(html.classList.contains('light') ? 'dark' : 'light')
+  })
+
   // Hero mockup carousel
   const titles = ['Effro. - Dashboard','Effro. - Insights']
   let cur = 0
