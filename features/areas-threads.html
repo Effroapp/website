@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230F0E0C'/%3E%3Cpath d='M84 16Q65 37 50 50' stroke='%2310B981' stroke-width='17' stroke-linecap='round' fill='none'/%3E%3Cpath d='M84 84Q65 63 50 50' stroke='%23EDEAE3' stroke-width='17' stroke-linecap='round' fill='none'/%3E%3Cpath d='M16 50L50 50' stroke='%23EDEAE3' stroke-width='17' stroke-linecap='round' fill='none'/%3E%3C/svg%3E"/>
+<title>Areas and Threads - Effro</title>
+<meta name="description" content="Give every responsibility its own area. Inside, threads carry each line of work, and entries record what happened. One clear shape for everything you are juggling. effro.io"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500&family=Lexend:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --paper:#F7F4ED;--paper-2:#EFECE3;--paper-3:#E5E1D6;--stone:#D4CFC2;
+  --ink-muted:#8A877F;--ink-soft:#4A4845;--ink:#14130F;
+  --pitch:#0F0E0C;--pitch-2:#181714;--pitch-3:#232220;--stone-dark:#38352F;
+  --paper-md:#6B6862;--paper-sd:#A8A49E;--paper-d:#EDEAE3;
+  --mint:#10B981;--mint-btn:#047857;--mint-hover:#065F46;
+  --sage:#7A9579;--sky:#6B8AB8;--amber:#C99A5C;--terracotta:#B86A5C;--lavender:#8A7BB8;
+  --ease:cubic-bezier(0.65,0,0.35,1);--ease-out:cubic-bezier(0.2,0.8,0.2,1);
+  --r-sm:6px;--r-md:8px;--r-lg:12px;--r-xl:16px;--r-2xl:24px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Geist',system-ui,sans-serif;background:var(--pitch);color:var(--paper-d);-webkit-font-smoothing:antialiased}
+.bg-grid-dark{background-image:linear-gradient(rgba(247,244,237,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(247,244,237,.022) 1px,transparent 1px);background-size:40px 40px}
+.bg-grid-light{background-image:linear-gradient(rgba(20,19,15,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(20,19,15,.025) 1px,transparent 1px);background-size:32px 32px}
+.nav{position:fixed;top:0;width:100%;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 52px;height:64px;background:rgba(15,14,12,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(56,53,47,.5)}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-wm{display:inline-flex;align-items:baseline;font-size:22px;font-weight:600;letter-spacing:-.045em;color:var(--paper-d)}
+.wm-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--mint);margin-left:2px;margin-bottom:2px}
+.nav-links{display:flex;gap:32px;list-style:none;align-items:center}
+.nav-links a{color:var(--paper-sd);text-decoration:none;font-size:14px;transition:color .15s}
+.nav-links a:hover,.nav-links a.active{color:var(--paper-d)}
+.nav-cta{display:inline-flex;align-items:center;gap:7px;background:var(--mint-btn);color:var(--paper-d);font-size:14px;font-weight:600;padding:9px 20px;border-radius:var(--r-md);text-decoration:none;transition:background .15s}
+.nav-cta:hover{background:var(--mint-hover)}
+.nav-dd{position:relative}
+.nav-dd-trigger{display:inline-flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;font-family:'Geist',sans-serif;font-size:14px;color:var(--paper-sd);transition:color .15s;padding:0}
+.nav-dd-trigger:hover,.nav-dd.open .nav-dd-trigger{color:var(--paper-d)}
+.nav-dd-trigger svg{transition:transform .2s var(--ease)}
+.nav-dd:hover .nav-dd-trigger svg,.nav-dd.open .nav-dd-trigger svg{transform:rotate(180deg)}
+.nav-dd::after{content:'';position:absolute;top:100%;left:-20px;right:-20px;height:18px}
+.nav-dd-menu{position:absolute;top:calc(100% + 14px);left:0;transform:translateY(8px);width:820px;max-width:calc(100vw - 40px);display:grid;grid-template-columns:280px 1fr;overflow:hidden;background:rgba(24,23,20,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--stone-dark);border-radius:var(--r-lg);box-shadow:0 16px 48px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.03);opacity:0;visibility:hidden;z-index:120;transition:opacity .18s var(--ease),transform .18s var(--ease),visibility .18s}
+.dd-promo{display:flex;flex-direction:column;justify-content:center;padding:30px 28px;background:linear-gradient(180deg,rgba(16,185,129,.10),rgba(16,185,129,.03)),var(--pitch-3);border-right:1px solid var(--stone-dark)}
+.dd-promo h4{font-size:17px;font-weight:600;line-height:1.4;letter-spacing:-.015em;color:var(--paper-d);margin-bottom:14px}
+.dd-promo p{font-family:'Lexend',sans-serif;font-size:14px;line-height:1.6;color:var(--paper-sd);margin-bottom:22px}
+.dd-see{display:inline-flex;align-items:center;gap:7px;color:var(--mint);font-size:14px;font-weight:600;text-decoration:none}
+.dd-see svg{transition:transform .15s}
+.dd-see:hover svg{transform:translateX(3px)}
+.dd-list{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:12px;align-items:start}
+.nav-dd-menu .dd-item{padding:13px 15px;gap:14px}
+.nav-dd-menu .dd-ico{width:38px;height:38px;border-radius:9px}
+.nav-dd-menu .dd-ico svg{width:20px;height:20px}
+.nav-dd-menu .dd-tx{gap:3px}
+.nav-dd-menu .dd-t{font-size:15px}
+.nav-dd-menu .dd-d{font-size:13px;line-height:1.5}
+html.light .dd-promo{border-right-color:var(--stone);background:linear-gradient(180deg,rgba(16,185,129,.08),rgba(16,185,129,.025)),var(--paper-2)}
+html.light .dd-promo h4{color:var(--ink)}
+html.light .dd-promo p{color:var(--ink-soft)}
+html.light .dd-see{color:var(--mint-btn)}
+@media(max-width:1180px){.nav-dd-menu{grid-template-columns:1fr;width:380px}.dd-list{grid-template-columns:1fr}.dd-promo{border-right:none;border-bottom:1px solid var(--stone-dark);padding:24px 22px}html.light .dd-promo{border-bottom-color:var(--stone)}}
+@media(max-width:440px){.nav-dd-menu{width:calc(100vw - 32px)}}
+.nav-dd:hover .nav-dd-menu,.nav-dd.open .nav-dd-menu{opacity:1;visibility:visible;transform:translateY(0)}
+.dd-item{display:flex;align-items:flex-start;gap:12px;padding:10px 12px;border-radius:var(--r-md);text-decoration:none;transition:background .15s}
+.dd-item:hover{background:var(--pitch-3)}
+.dd-item.active{background:rgba(16,185,129,.08)}
+.dd-ico{width:32px;height:32px;flex-shrink:0;border-radius:8px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15);display:flex;align-items:center;justify-content:center;color:var(--mint)}
+.dd-tx{display:flex;flex-direction:column;gap:2px;min-width:0}
+.dd-t{font-size:13.5px;font-weight:600;color:var(--paper-d);letter-spacing:-.01em}
+.dd-d{font-size:12px;line-height:1.4;color:var(--paper-md)}
+.theme-toggle{width:36px;height:36px;border-radius:var(--r-md);border:1px solid var(--stone-dark);background:transparent;color:var(--paper-sd);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .15s,color .15s,background .15s;flex-shrink:0}
+.theme-toggle:hover{border-color:var(--paper-sd);color:var(--paper-d);background:rgba(255,255,255,.04)}
+.wrap{max-width:1200px;margin:0 auto}
+.s-label{font-family:'Geist Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.22em;color:var(--mint);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.s-label.center{justify-content:center}
+.s-label::after{content:'';display:block;width:32px;height:1px;background:var(--mint);opacity:.5}
+.s-label.center::after{display:none}
+.s-title{font-size:clamp(30px,4vw,48px);font-weight:700;letter-spacing:-.035em;line-height:1.08;margin-bottom:16px}
+.s-sub{font-family:'Lexend',sans-serif;font-size:17px;font-weight:300;line-height:1.65;max-width:580px;opacity:.65}
+.fp-hero{min-height:92vh;display:flex;align-items:center;position:relative;overflow:hidden;background:radial-gradient(ellipse 50% 55% at 100% 0%,rgba(16,185,129,.13) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 100% 30%,rgba(16,185,129,.06) 0%,transparent 55%),radial-gradient(ellipse 30% 40% at 0% 65%,rgba(16,185,129,.025) 0%,transparent 60%),var(--pitch)}
+.fp-hero-inner{max-width:1440px;margin:0 auto;padding:120px 52px 80px;display:grid;grid-template-columns:1fr 1.4fr;gap:56px;align-items:center;width:100%}
+.fp-hero-copy{position:relative;z-index:2}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(16,185,129,.09);border:1px solid rgba(16,185,129,.22);color:var(--mint);font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:28px}
+.fp-hero h1{font-size:clamp(38px,4vw,62px);font-weight:800;letter-spacing:-.045em;line-height:1.02;color:var(--paper-d);margin-bottom:22px}
+.fp-hero h1 em{font-style:normal;color:var(--mint)}
+.fp-hero-sub{font-family:'Lexend',sans-serif;font-size:17px;font-weight:300;line-height:1.7;color:var(--paper-sd);max-width:480px;margin-bottom:34px}
+.ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.btn-p{display:inline-flex;align-items:center;gap:8px;background:var(--mint-btn);color:var(--paper-d);font-size:15px;font-weight:600;padding:14px 26px;border-radius:var(--r-md);text-decoration:none;transition:background .15s,transform .1s}
+.btn-p:hover{background:var(--mint-hover);transform:translateY(-1px)}
+.btn-s{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--paper-d);font-size:15px;font-weight:400;padding:13px 26px;border-radius:var(--r-md);border:1px solid var(--stone-dark);text-decoration:none;transition:border-color .15s,transform .1s}
+.btn-s:hover{border-color:var(--paper-sd);transform:translateY(-1px)}
+.fp-providers{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-md)}
+.fp-hero-visual{position:relative;z-index:1;perspective:2200px}
+.v-glow{position:absolute;inset:-20%;background:radial-gradient(ellipse 55% 45% at 85% 15%,rgba(16,185,129,.26) 0%,transparent 55%),radial-gradient(ellipse 70% 60% at 60% 50%,rgba(16,185,129,.10) 0%,transparent 65%);filter:blur(52px);z-index:0;pointer-events:none}
+.mock-wrap{position:relative;z-index:2;transform:rotateY(-10deg) rotateX(4deg) scale(.95);transform-origin:center center;transition:transform .7s var(--ease-out)}
+.fp-hero-visual:hover .mock-wrap{transform:rotateY(-5deg) rotateX(2deg) scale(.97)}
+.app-mock{background:var(--pitch-2);border-radius:var(--r-lg);overflow:hidden;position:relative;box-shadow:0 0 0 1px rgba(255,255,255,.10),inset 0 1px 0 rgba(255,255,255,.14),0 2px 4px rgba(0,0,0,.30),0 8px 16px rgba(0,0,0,.35),0 24px 48px rgba(0,0,0,.50),0 48px 96px rgba(0,0,0,.40)}
+.app-mock::after{content:'';position:absolute;inset:0;border-radius:var(--r-lg);background:linear-gradient(180deg,rgba(255,255,255,.07) 0,rgba(255,255,255,.02) 2px,transparent 18%);pointer-events:none;z-index:20}
+.tb{background:var(--pitch);padding:10px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--pitch-3)}
+.tb-d{width:10px;height:10px;border-radius:50%}
+.tb-t{margin-left:8px;font-family:'Geist Mono',monospace;font-size:11px;color:var(--paper-md);letter-spacing:.08em;flex:1}
+/* Areas mock */
+.ar{padding:16px}
+.ar-head{display:flex;align-items:center;gap:8px;padding-bottom:11px;margin-bottom:6px;border-bottom:1px solid #38352F;font-size:13px;font-weight:600;color:#EDEAE3;letter-spacing:-.02em}
+.ar-head .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ar-status{margin-left:auto;font-family:'Geist Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.12em;padding:2px 7px;border-radius:10px;background:rgba(107,138,184,.16);color:#6B8AB8}
+.ar-thread{display:flex;align-items:center;gap:9px;padding:8px 2px;border-bottom:1px solid rgba(56,53,47,.5)}
+.ar-thread .td{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.ar-thread .tt{flex:1;font-size:12px;color:#A8A49E;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ar-thread .st{font-family:'Geist Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:#6B6862}
+.ar-thread .tc{font-family:'Geist Mono',monospace;font-size:10px;color:#6B6862}
+.ar-legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.ar-chip{display:inline-flex;align-items:center;gap:4px;font-family:'Geist Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.08em;padding:3px 8px;border-radius:20px;background:#232220;border:1px solid #38352F;color:#A8A49E}
+.ar-chip svg{width:10px;height:10px}
+.ar-mini{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.ar-mc{background:#232220;border:1px solid #38352F;border-radius:8px;padding:10px 11px;border-left:3px solid var(--mint)}
+.ar-mc.sky{border-left-color:var(--sky)}.ar-mc.amber{border-left-color:var(--amber)}.ar-mc.sage{border-left-color:var(--sage)}.ar-mc.terr{border-left-color:var(--terracotta)}
+.ar-mc .n{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:#EDEAE3;margin-bottom:4px}
+.ar-mc .n .dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.ar-mc .m{font-family:'Geist Mono',monospace;font-size:9px;color:#6B6862}
+.tl{display:flex;flex-direction:column;gap:7px}
+.tl-e{background:#232220;border:1px solid #38352F;border-left:3px solid var(--mint);border-radius:8px;padding:9px 12px;display:flex;align-items:center;gap:9px}
+.tl-e.todo{border-left-color:var(--sky)}.tl-e.decision{border-left-color:var(--amber)}.tl-e.meeting{border-left-color:var(--lavender)}.tl-e.blocked{border-left-color:var(--terracotta)}
+.tl-e .b{display:inline-flex;align-items:center;gap:4px;font-family:'Geist Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.1em;padding:2px 6px;border-radius:5px;flex-shrink:0}
+.tl-e .b svg{width:9px;height:9px}
+.tl-e.update .b{color:var(--mint);background:rgba(16,185,129,.16)}
+.tl-e.todo .b{color:var(--sky);background:rgba(107,138,184,.18)}
+.tl-e.decision .b{color:var(--amber);background:rgba(201,154,92,.18)}
+.tl-e.meeting .b{color:var(--lavender);background:rgba(138,123,184,.18)}
+.tl-e.blocked .b{color:var(--terracotta);background:rgba(184,106,92,.18)}
+.tl-e .t{font-size:11.5px;color:#EDEAE3;flex:1}
+.splits{padding:96px 40px;background:var(--paper)}
+.splits-head{max-width:760px;margin:0 auto 72px;text-align:center}
+.splits-head .s-title{color:var(--ink)}
+.splits-head p{font-family:'Lexend',sans-serif;font-size:17px;font-weight:300;line-height:1.7;color:var(--ink-soft);margin-top:6px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;max-width:1080px;margin:0 auto;padding:44px 0}
+.split + .split{border-top:1px solid var(--stone)}
+.split.rev .split-visual{order:-1}
+.split-copy h3{font-size:clamp(22px,2.4vw,28px);font-weight:600;letter-spacing:-.025em;color:var(--ink);margin-bottom:14px;line-height:1.15}
+.split-copy p{font-family:'Lexend',sans-serif;font-size:15.5px;font-weight:300;line-height:1.72;color:var(--ink-soft)}
+.viz{background:var(--pitch-2);border:1px solid var(--stone-dark);border-radius:var(--r-xl);padding:24px;box-shadow:0 16px 48px rgba(20,19,15,.14)}
+.example{padding:96px 40px;background:var(--paper-2)}
+.example .s-title{color:var(--ink)}
+.example .s-sub{color:var(--ink-soft)}
+.example-head{margin-bottom:56px}
+.ex-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:32px;align-items:center;max-width:1000px;margin:0 auto}
+.ex-panel{background:var(--paper);border:1px solid var(--stone);border-radius:var(--r-xl);overflow:hidden;box-shadow:0 4px 24px rgba(20,19,15,.06)}
+.ex-panel-h{padding:12px 18px;border-bottom:1px solid var(--stone);font-family:'Geist Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-muted);display:flex;align-items:center;gap:8px}
+.ex-panel-h svg{width:13px;height:13px;color:var(--mint)}
+.ex-out{padding:14px;display:flex;flex-direction:column;gap:9px}
+.ex-card{border:1px solid var(--stone);border-left:3px solid var(--stone);border-radius:9px;padding:11px 13px;background:var(--paper)}
+.ex-card.sky{border-left-color:var(--sky)}.ex-card.amber{border-left-color:var(--amber)}.ex-card.sage{border-left-color:var(--sage)}.ex-card.terr{border-left-color:var(--terracotta)}
+.ex-card.update{border-left-color:var(--mint)}.ex-card.todo{border-left-color:var(--sky)}.ex-card.decision{border-left-color:var(--amber)}.ex-card.meeting{border-left-color:var(--lavender)}
+.ex-card-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.ex-b{display:inline-flex;align-items:center;gap:4px;font-family:'Geist Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.12em;padding:2px 7px;border-radius:5px;background:var(--paper-3);color:var(--ink-muted)}
+.ex-b svg{width:10px;height:10px}
+.ex-b.update{background:rgba(16,185,129,.14);color:#2f8a63}
+.ex-b.todo{background:rgba(107,138,184,.14);color:#4a6da0}
+.ex-b.decision{background:rgba(201,154,92,.14);color:#9a7637}
+.ex-b.meeting{background:rgba(138,123,184,.14);color:#6f5fa8}
+.ex-when{font-family:'Geist Mono',monospace;font-size:10px;color:var(--ink-muted);margin-left:auto}
+.ex-card p{font-size:13px;color:var(--ink);line-height:1.45}
+.ex-card .sub{font-family:'Geist Mono',monospace;font-size:10px;color:var(--ink-muted);margin-top:5px}
+.ex-arrow{display:flex;align-items:center;justify-content:center;color:var(--mint)}
+.private{padding:96px 40px;background:var(--pitch)}
+.private-inner{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;max-width:1100px;margin:0 auto}
+.private .s-title{color:var(--paper-d)}
+.private-detail{font-family:'Lexend',sans-serif;font-size:15.5px;font-weight:300;line-height:1.72;color:var(--paper-sd);margin-top:18px}
+.prov-grid{display:flex;flex-direction:column;gap:9px}
+.prov{display:flex;align-items:center;gap:12px;background:var(--pitch-2);border:1px solid var(--stone-dark);border-radius:var(--r-lg);padding:14px 16px;transition:border-color .2s}
+.prov:hover{border-color:rgba(16,185,129,.3)}
+.prov .pd{width:8px;height:8px;border-radius:50%;background:var(--mint);flex-shrink:0}
+.prov .pn{font-size:14px;font-weight:500;color:var(--paper-d)}
+.prov .pm{font-family:'Geist Mono',monospace;font-size:11px;color:var(--paper-md);margin-left:auto}
+.cta-band{background:var(--pitch);padding:104px 40px;text-align:center;position:relative;overflow:hidden}
+.cta-band::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 50% 100%,rgba(16,185,129,.07) 0%,transparent 70%);pointer-events:none}
+.cta-inner{max-width:600px;margin:0 auto;position:relative}
+.cta-inner h2{font-size:clamp(30px,4vw,46px);font-weight:700;letter-spacing:-.035em;line-height:1.08;color:var(--paper-d);margin-bottom:16px}
+.cta-inner h2 em{font-style:normal;color:var(--mint)}
+.cta-inner p{font-family:'Lexend',sans-serif;font-size:16px;font-weight:300;color:var(--paper-sd);margin-bottom:34px}
+.cta-inner .ctas{justify-content:center}
+footer{background:var(--pitch-2);border-top:1px solid var(--stone-dark);padding:48px 40px}
+.footer-i{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.footer-logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--paper-d)}
+.footer-wm{display:inline-flex;align-items:baseline;font-size:20px;font-weight:600;letter-spacing:-.045em}
+.footer-links{display:flex;gap:28px;flex-wrap:wrap}
+.footer-links a{font-size:13px;color:var(--paper-sd);text-decoration:none;transition:color .15s}
+.footer-links a:hover{color:var(--paper-d)}
+.footer-copy{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--stone-dark);text-transform:uppercase}
+html.light{--pitch:#FFFFFF;--pitch-2:#F7F4ED;--pitch-3:#EFECE3;--stone-dark:#D4CFC2;--paper-d:#14130F;--paper-sd:#4A4845;--paper-md:#8A877F}
+html.light body{background:var(--paper);color:var(--ink)}
+html.light .nav{background:rgba(247,244,237,.92);border-bottom-color:var(--stone)}
+html.light .nav-wm{color:var(--ink)}
+html.light .nav-links a{color:var(--ink-muted)}
+html.light .nav-links a:hover,html.light .nav-links a.active{color:var(--ink)}
+html.light .nav-dd-trigger{color:var(--ink-muted)}
+html.light .nav-dd-trigger:hover,html.light .nav-dd.open .nav-dd-trigger{color:var(--ink)}
+html.light .nav-dd-menu{background:rgba(247,244,237,.98);border-color:var(--stone)}
+html.light .dd-item:hover{background:var(--paper-3)}
+html.light .dd-t{color:var(--ink)}
+html.light .dd-d{color:var(--ink-muted)}
+html.light .theme-toggle{border-color:var(--stone);color:var(--ink-muted)}
+html.light .theme-toggle:hover{border-color:var(--ink-muted);color:var(--ink);background:rgba(0,0,0,.04)}
+html.light .bg-grid-dark{background-image:linear-gradient(rgba(20,19,15,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(20,19,15,.022) 1px,transparent 1px)}
+html.light .fp-hero{background:radial-gradient(ellipse 50% 55% at 100% 0%,rgba(16,185,129,.10) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 100% 30%,rgba(16,185,129,.05) 0%,transparent 55%),radial-gradient(ellipse 30% 40% at 0% 65%,rgba(16,185,129,.03) 0%,transparent 60%),#FFFFFF}
+html.light .fp-hero h1{color:var(--ink)}
+html.light .fp-hero-sub{color:var(--ink-soft)}
+html.light .private .s-title{color:var(--ink)}
+html.light .private-detail{color:var(--ink-soft)}
+html.light .prov{background:var(--paper-2);border-color:var(--stone)}
+html.light .prov .pn{color:var(--ink)}
+html.light .cta-band::before{display:none}
+html.light .cta-inner h2{color:var(--ink)}
+html.light .cta-inner p{color:var(--ink-soft)}
+html.light footer{background:var(--paper-2);border-top-color:var(--stone)}
+html.light .footer-wm{color:var(--ink)}
+html.light .footer-links a{color:var(--ink-soft)}
+html.light .footer-links a:hover{color:var(--ink)}
+html.light .footer-copy{color:var(--ink-muted)}
+@media(max-width:1100px){.fp-hero-inner{grid-template-columns:1fr}.fp-hero-visual{display:none}.private-inner{grid-template-columns:1fr;gap:40px}}
+@media(max-width:900px){.split{grid-template-columns:1fr;gap:28px}.split.rev .split-visual{order:0}.ex-grid{grid-template-columns:1fr;gap:18px}.ex-arrow{transform:rotate(90deg)}}
+@media(max-width:700px){.nav{padding:0 20px}.nav-links{display:none}.fp-hero-inner,.splits,.example,.private,.cta-band{padding-left:20px;padding-right:20px}footer{padding-left:20px;padding-right:20px}.fp-hero h1{font-size:38px}.footer-i{flex-direction:column;align-items:flex-start;gap:20px}}
+</style>
+</head>
+<body class="bg-grid-dark">
+
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <svg width="28" height="28" viewBox="0 0 100 100" fill="none"><path d="M 78 22 Q 64 42, 50 50" stroke="#10B981" stroke-width="12" stroke-linecap="round"/><path d="M 78 78 Q 64 58, 50 50" stroke="#EDEAE3" stroke-width="12" stroke-linecap="round"/><path d="M 22 50 L 50 50" stroke="#EDEAE3" stroke-width="12" stroke-linecap="round"/></svg>
+    <span class="nav-wm">Effro<span class="wm-dot"></span></span>
+  </a>
+  <ul class="nav-links">
+    <li class="nav-dd">
+      <button class="nav-dd-trigger" aria-haspopup="true" aria-expanded="false">Features
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <div class="nav-dd-menu">
+        <div class="dd-promo">
+          <h4>A digital information management system designed for your exact needs.</h4>
+          <p>Store, search and retrieve so you don't have to rely on recall alone.</p>
+          <a class="dd-see" href="/#features">See all features <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+        </div>
+        <div class="dd-list">
+        <a class="dd-item" href="/features/smart-generate"><span class="dd-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M9 13a4.5 4.5 0 0 0 3-4"/><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/><path d="M3.477 10.896a4 4 0 0 1 .585-.396"/><path d="M6 18a4 4 0 0 1-1.967-.516"/><path d="M12 13h4"/><path d="M12 18h6a2 2 0 0 1 2 2v1"/><path d="M12 8h8"/><path d="M16 8V5a2 2 0 0 1 2-2"/><circle cx="16" cy="13" r=".5"/><circle cx="18" cy="3" r=".5"/><circle cx="20" cy="21" r=".5"/><circle cx="20" cy="8" r=".5"/></svg></span><span class="dd-tx"><span class="dd-t">Smart Generate</span><span class="dd-d">Drop in an email, PDF, or calendar invite and Effro pulls out the todos, decisions, and meetings for you to approve.</span></span></a>
+        <a class="dd-item active" href="/features/areas-threads"><span class="dd-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="dd-tx"><span class="dd-t">Areas and Threads</span><span class="dd-d">Give every responsibility its own area, with threads for each line of work and entries that record what happened.</span></span></a>
+        <a class="dd-item" href="/features/signals"><span class="dd-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.07 4.93A10 10 0 0 0 6.99 3.34"/><path d="M4 6h.01"/><path d="M2.29 9.62A10 10 0 1 0 21.31 8.35"/><path d="M16.24 7.76A6 6 0 1 0 8.23 16.67"/><path d="M12 18h.01"/><path d="M17.99 11.66A6 6 0 0 1 15.77 16.67"/><circle cx="12" cy="12" r="2"/><path d="m13.41 10.59 5.66-5.66"/></svg></span><span class="dd-tx"><span class="dd-t">Signals</span><span class="dd-d">Outlook meetings and Jira issues arrive on their own, pre-sorted into the right area for you to accept or skip.</span></span></a>
+        <a class="dd-item" href="/features/insights"><span class="dd-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.065 12.493-6.18 1.318a.934.934 0 0 1-1.108-.702l-.537-2.15a1.07 1.07 0 0 1 .691-1.265l13.504-4.44"/><path d="m13.56 11.747 4.332-.924"/><path d="m16 21-3.105-6.21"/><path d="M16.485 5.94a2 2 0 0 1 1.455-2.425l1.09-.272a1 1 0 0 1 1.212.727l1.515 6.06a1 1 0 0 1-.727 1.213l-1.09.272a2 2 0 0 1-2.425-1.455z"/><path d="m6.158 8.633 1.114 4.456"/><path d="m8 21 3.105-6.21"/><circle cx="12" cy="13" r="2"/></svg></span><span class="dd-tx"><span class="dd-t">Insights</span><span class="dd-d">Your next meeting, what is due today, and the area going quiet, surfaced the moment you open the app.</span></span></a>
+        <a class="dd-item" href="/features/ai-overview-roundup"><span class="dd-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg></span><span class="dd-tx"><span class="dd-t">AI Overview and Roundup</span><span class="dd-d">A plain daily summary of every area, plus a one-click weekly digest you can edit and send on.</span></span></a>
+        <a class="dd-item" href="/features/private"><span class="dd-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><span class="dd-tx"><span class="dd-t">Private by default</span><span class="dd-d">Runs on your desktop with your own AI key. No cloud account, no subscription, nothing leaves your machine.</span></span></a>
+        </div>
+      </div>
+    </li>
+    <li><a href="/#how">How it works</a></li>
+    <li><a href="/#faq">FAQ</a></li>
+  </ul>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode" title="Toggle theme">
+    <svg id="iconMoon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <svg id="iconSun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
+  <a href="https://github.com/Effroapp/effro/releases/latest" class="nav-cta">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+    Download Free
+  </a>
+</nav>
+
+<section class="fp-hero">
+  <div class="fp-hero-inner">
+    <div class="fp-hero-copy">
+      <div class="eyebrow">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+        Areas and Threads
+      </div>
+      <h1>A place for every<br><em>plate you spin.</em></h1>
+      <p class="fp-hero-sub">Give every responsibility its own area. Inside, threads carry each line of work, and entries record what happened. One clear shape for everything you are juggling, so parallel work never blurs together.</p>
+      <div class="ctas">
+        <a href="https://github.com/Effroapp/effro/releases/latest" class="btn-p">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+          Download for Windows, Free
+        </a>
+        <a href="#how" class="btn-s">See how it works</a>
+      </div>
+      <p class="fp-providers">Areas, then threads, then entries. The same shape everywhere.</p>
+    </div>
+    <div class="fp-hero-visual">
+      <div class="v-glow"></div>
+      <div class="mock-wrap">
+        <div class="app-mock">
+          <div class="tb"><span class="tb-d" style="background:#FF5F57"></span><span class="tb-d" style="background:#FFBD2E"></span><span class="tb-d" style="background:#28CA41"></span><span class="tb-t">Effro. - Product Development</span></div>
+          <div class="ar">
+            <div class="ar-head"><span class="dot" style="background:#6B8AB8"></span>Product Development<span class="ar-status">Active</span></div>
+            <div class="ar-thread"><span class="td" style="background:#6B8AB8"></span><span class="tt">Q3 roadmap finalisation</span><span class="st">open</span><span class="tc">12</span></div>
+            <div class="ar-thread"><span class="td" style="background:#C9A85C"></span><span class="tt">API rate-limiting redesign</span><span class="st">open</span><span class="tc">7</span></div>
+            <div class="ar-thread"><span class="td" style="background:#B86A5C"></span><span class="tt">Mobile beta launch blocker</span><span class="st">on hold</span><span class="tc">4</span></div>
+            <div class="ar-thread" style="border-bottom:none"><span class="td" style="background:#7A9579"></span><span class="tt">Design system tokens</span><span class="st">done</span><span class="tc">9</span></div>
+            <div class="ar-legend">
+              <span class="ar-chip" style="color:#10B981"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Update</span>
+              <span class="ar-chip" style="color:#6B8AB8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Todo</span>
+              <span class="ar-chip" style="color:#C9A85C"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>Decision</span>
+              <span class="ar-chip" style="color:#8A7BB8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>Meeting</span>
+              <span class="ar-chip" style="color:#B86A5C"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>Blocked</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="splits bg-grid-light" id="how">
+  <div class="splits-head">
+    <p class="s-label center">How it works</p>
+    <h2 class="s-title">Structure that matches<br>how the work actually splits</h2>
+    <p>Not a blank page, not another wiki. One proven shape, three levels deep, that maps to how professional responsibility really accumulates.</p>
+  </div>
+
+  <div class="split">
+    <div class="split-copy">
+      <h3>Areas: one plate per responsibility.</h3>
+      <p>Each thing you are responsible for gets its own area, so parallel work never blurs together. Status reads at a glance: active, in review, blocked, or stable, each with its own quiet colour.</p>
+    </div>
+    <div class="split-visual">
+      <div class="viz"><div class="ar-mini">
+        <div class="ar-mc sky"><div class="n"><span class="dot" style="background:#6B8AB8"></span>Product Dev</div><div class="m">active · 3 open</div></div>
+        <div class="ar-mc amber"><div class="n"><span class="dot" style="background:#C9A85C"></span>Engineering</div><div class="m">review · 2 due</div></div>
+        <div class="ar-mc sage"><div class="n"><span class="dot" style="background:#7A9579"></span>Partnerships</div><div class="m">stable</div></div>
+        <div class="ar-mc terr"><div class="n"><span class="dot" style="background:#B86A5C"></span>Legal</div><div class="m">blocked</div></div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="split rev">
+    <div class="split-copy">
+      <h3>Threads: a living line of work.</h3>
+      <p>Inside an area, threads carry each strand from kickoff to done. A thread is open while it moves, on hold when it waits, and done when it lands. The area stays tidy because the work lives in threads.</p>
+    </div>
+    <div class="split-visual">
+      <div class="viz"><div class="tl">
+        <div class="tl-e"><span class="b" style="color:#6B8AB8;background:rgba(107,138,184,.18)">open</span><span class="t">Q3 roadmap finalisation</span></div>
+        <div class="tl-e"><span class="b" style="color:#C9A85C;background:rgba(201,154,92,.18)">on hold</span><span class="t">API rate-limiting redesign</span></div>
+        <div class="tl-e"><span class="b" style="color:#7A9579;background:rgba(122,149,121,.18)">done</span><span class="t">Design system tokens</span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="split">
+    <div class="split-copy">
+      <h3>Entries: the atomic record.</h3>
+      <p>Every thread is a timeline of entries: an update, a todo, a decision, a meeting, a blocker. Each one typed, dated, and colour-coded, so the history of any line of work reads itself back to you.</p>
+    </div>
+    <div class="split-visual">
+      <div class="viz"><div class="tl">
+        <div class="tl-e decision"><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>Decision</span><span class="t">Ship API v2 in Q3</span></div>
+        <div class="tl-e todo"><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Todo</span><span class="t">Send scope doc to Sarah</span></div>
+        <div class="tl-e meeting"><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>Meeting</span><span class="t">Q3 review, 3 Jun</span></div>
+        <div class="tl-e update"><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Update</span><span class="t">Legal cleared clause 7</span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="split rev">
+    <div class="split-copy">
+      <h3>The same shape, everywhere.</h3>
+      <p>Because every area follows the same structure, re-entering any one of them takes seconds, not minutes. You always know where you are, because everywhere works the same way.</p>
+    </div>
+    <div class="split-visual">
+      <div class="viz"><div class="ar-mini">
+        <div class="ar-mc sky"><div class="n"><span class="dot" style="background:#6B8AB8"></span>Q3 Launch</div><div class="m">4 threads</div></div>
+        <div class="ar-mc amber"><div class="n"><span class="dot" style="background:#C9A85C"></span>Hiring</div><div class="m">2 threads</div></div>
+        <div class="ar-mc sage"><div class="n"><span class="dot" style="background:#7A9579"></span>Vendor Renewal</div><div class="m">1 thread</div></div>
+        <div class="ar-mc sky"><div class="n"><span class="dot" style="background:#6B8AB8"></span>Platform Migration</div><div class="m">5 threads</div></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="example">
+  <div class="wrap">
+    <div class="example-head">
+      <p class="s-label">In practice</p>
+      <h2 class="s-title">From four plates,<br>into one line of work</h2>
+      <p class="s-sub">Start at the overview of everything you carry, then drop into a single thread and read its whole history at a glance.</p>
+    </div>
+    <div class="ex-grid">
+      <div class="ex-panel">
+        <div class="ex-panel-h">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+          Your areas
+        </div>
+        <div class="ex-out">
+          <div class="ex-card sky"><div class="ex-card-top"><span class="ex-b">Area</span><span class="ex-when">active</span></div><p>Q3 Launch</p><div class="sub">4 threads, 28 entries</div></div>
+          <div class="ex-card amber"><div class="ex-card-top"><span class="ex-b">Area</span><span class="ex-when">review</span></div><p>Hiring</p><div class="sub">2 threads, 11 entries</div></div>
+          <div class="ex-card sage"><div class="ex-card-top"><span class="ex-b">Area</span><span class="ex-when">stable</span></div><p>Vendor Renewal</p><div class="sub">1 thread, 6 entries</div></div>
+        </div>
+      </div>
+      <div class="ex-arrow">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </div>
+      <div class="ex-panel">
+        <div class="ex-panel-h">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Q3 Launch › Roadmap
+        </div>
+        <div class="ex-out">
+          <div class="ex-card decision"><div class="ex-card-top"><span class="ex-b decision">Decision</span><span class="ex-when">2 Jun</span></div><p>Ship the API v2 redesign in Q3</p></div>
+          <div class="ex-card todo"><div class="ex-card-top"><span class="ex-b todo">Todo</span><span class="ex-when">from Jira</span></div><p>Redesign onboarding, PROD-2847</p></div>
+          <div class="ex-card meeting"><div class="ex-card-top"><span class="ex-b meeting">Meeting</span><span class="ex-when">3 Jun</span></div><p>Q3 review with Sarah and Layla</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="private bg-grid-dark">
+  <div class="private-inner">
+    <div>
+      <p class="s-label">Structure that stays yours</p>
+      <h2 class="s-title">Your shape, on<br>your own machine</h2>
+      <p class="private-detail">Every area, thread, and entry lives in a single database on your disk. No cloud to sync to, nothing to sign into, and open formats underneath so your structure is never locked away from you.</p>
+    </div>
+    <div class="prov-grid">
+      <div class="prov"><span class="pd"></span><span class="pn">Stored locally</span><span class="pm">One file on your disk</span></div>
+      <div class="prov"><span class="pd"></span><span class="pn">No lock-in</span><span class="pm">Open formats, yours to keep</span></div>
+      <div class="prov"><span class="pd"></span><span class="pn">No account</span><span class="pm">Nothing to sign into</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band bg-grid-dark">
+  <div class="cta-inner">
+    <h2>Give the work <em>a shape.</em></h2>
+    <p>Download Effro for Windows, free, and build your first area in a minute. Mac is on the way, join the waitlist to be first to know.</p>
+    <div class="ctas">
+      <a href="https://github.com/Effroapp/effro/releases/latest" class="btn-p">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+        Download for Windows, Free
+      </a>
+      <a href="/#waitlist" class="btn-s">Join waitlist, Mac soon</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-i">
+    <a href="/" class="footer-logo">
+      <svg width="22" height="22" viewBox="0 0 100 100" fill="none"><path d="M 78 22 Q 64 42, 50 50" stroke="#10B981" stroke-width="12" stroke-linecap="round"/><path d="M 78 78 Q 64 58, 50 50" stroke="#EDEAE3" stroke-width="12" stroke-linecap="round"/><path d="M 22 50 L 50 50" stroke="#EDEAE3" stroke-width="12" stroke-linecap="round"/></svg>
+      <span class="footer-wm">Effro<span class="wm-dot"></span></span>
+    </a>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/features/areas-threads">Areas and Threads</a>
+      <a href="https://github.com/Effroapp/effro/releases/latest">Download</a>
+      <a href="https://github.com/Effroapp/effro">GitHub</a>
+      <a href="/#waitlist">Mac waitlist</a>
+    </div>
+    <p class="footer-copy">© 2025 LKEOGH QA LTD · effro.io</p>
+  </div>
+</footer>
+
+<script>
+  const html=document.documentElement,toggle=document.getElementById('themeToggle'),iconMoon=document.getElementById('iconMoon'),iconSun=document.getElementById('iconSun')
+  function setTheme(m){if(m==='light'){html.classList.add('light');iconMoon.style.display='none';iconSun.style.display='block'}else{html.classList.remove('light');iconMoon.style.display='block';iconSun.style.display='none'}localStorage.setItem('effro-theme',m)}
+  setTheme(localStorage.getItem('effro-theme')||'dark')
+  toggle.addEventListener('click',()=>setTheme(html.classList.contains('light')?'dark':'light'))
+  document.querySelectorAll('.nav-dd').forEach(dd=>{const t=dd.querySelector('.nav-dd-trigger');t.addEventListener('click',e=>{e.stopPropagation();const o=dd.classList.toggle('open');t.setAttribute('aria-expanded',o)});document.addEventListener('click',e=>{if(!dd.contains(e.target)){dd.classList.remove('open');t.setAttribute('aria-expanded','false')}});document.addEventListener('keydown',e=>{if(e.key==='Escape'){dd.classList.remove('open');t.setAttribute('aria-expanded','false')}})})
+</script>
+</body>
+</html>
