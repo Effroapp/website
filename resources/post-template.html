@@ -1,0 +1,329 @@
+<!doctype html>
+<!--
+  ============================================================================
+  EFFRO BLOG POST TEMPLATE
+  ----------------------------------------------------------------------------
+  HOW TO PUBLISH A POST:
+  1. Copy this file to /resources/your-post-slug.html
+     (the slug becomes the URL, e.g. /resources/your-post-slug)
+  2. Replace every [BRACKETED] placeholder below, including in the <head>.
+  3. Write your article inside the <div class="prose"> block.
+  4. Add a matching card to resources.html (template is commented in there).
+  5. Add the new URL to sitemap.xml.
+  6. Commit and push.
+
+  BRAND RULES (keep these): no em dashes anywhere, never bold words in the
+  copy. Use the mint links and headings for emphasis instead.
+  ============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230F0E0C'/%3E%3Cpath d='M84 16Q65 37 50 50' stroke='%2310B981' stroke-width='17' stroke-linecap='round' fill='none'/%3E%3Cpath d='M84 84Q65 63 50 50' stroke='%23EDEAE3' stroke-width='17' stroke-linecap='round' fill='none'/%3E%3Cpath d='M16 50L50 50' stroke='%23EDEAE3' stroke-width='17' stroke-linecap='round' fill='none'/%3E%3C/svg%3E"/>
+
+<!-- ===== SEO: replace everything in [brackets] ===== -->
+<title>[POST TITLE] - Effro</title>
+<meta name="description" content="[A 150 to 160 character summary of the post. This is what shows in Google search results, so make it compelling and include your main keyword.]"/>
+<link rel="canonical" href="https://effro.io/resources/[your-post-slug]"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="Effro"/>
+<meta property="og:title" content="[POST TITLE]"/>
+<meta property="og:description" content="[Same summary as the meta description.]"/>
+<meta property="og:url" content="https://effro.io/resources/[your-post-slug]"/>
+<meta property="og:image" content="https://effro.io/og-image.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="[POST TITLE]"/>
+<meta name="twitter:description" content="[Same summary as the meta description.]"/>
+<meta name="twitter:image" content="https://effro.io/og-image.png"/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500&family=Lexend:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+<!-- ===== Structured data (helps Google show it as an article). Replace [brackets]. ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "[POST TITLE]",
+  "description": "[Same summary as the meta description.]",
+  "image": "https://effro.io/og-image.png",
+  "datePublished": "[YYYY-MM-DD]",
+  "dateModified": "[YYYY-MM-DD]",
+  "author": { "@type": "Organization", "name": "Effro" },
+  "publisher": { "@type": "Organization", "name": "Effro", "url": "https://effro.io" },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://effro.io/resources/[your-post-slug]" }
+}
+</script>
+<style>
+:root{
+  --paper:#F7F4ED;--paper-2:#EFECE3;--paper-3:#E5E1D6;--stone:#D4CFC2;
+  --ink-muted:#8A877F;--ink-soft:#4A4845;--ink:#14130F;
+  --pitch:#0F0E0C;--pitch-2:#181714;--pitch-3:#232220;--stone-dark:#38352F;
+  --paper-md:#6B6862;--paper-sd:#A8A49E;--paper-d:#EDEAE3;
+  --mint:#10B981;--mint-btn:#047857;--mint-hover:#065F46;
+  --sage:#7A9579;--sky:#6B8AB8;--amber:#C99A5C;--terracotta:#B86A5C;--lavender:#8A7BB8;
+  --ease:cubic-bezier(0.65,0,0.35,1);--ease-out:cubic-bezier(0.2,0.8,0.2,1);
+  --r-sm:6px;--r-md:8px;--r-lg:12px;--r-xl:16px;--r-2xl:24px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Geist',system-ui,sans-serif;background:var(--pitch);color:var(--paper-d);-webkit-font-smoothing:antialiased}
+.bg-grid-dark{background-image:linear-gradient(rgba(247,244,237,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(247,244,237,.022) 1px,transparent 1px);background-size:40px 40px}
+/* Nav */
+.nav{position:fixed;top:0;width:100%;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 52px;height:64px;background:rgba(15,14,12,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(56,53,47,.5)}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-wm{display:inline-flex;align-items:baseline;font-size:22px;font-weight:600;letter-spacing:-.045em;color:var(--paper-d)}
+.wm-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--mint);margin-left:2px;margin-bottom:2px}
+.nav-links{display:flex;gap:32px;list-style:none;align-items:center}
+.nav-links a{color:var(--paper-sd);text-decoration:none;font-size:14px;transition:color .15s}
+.nav-links a:hover,.nav-links a.active{color:var(--paper-d)}
+.nav-cta{display:inline-flex;align-items:center;gap:7px;background:var(--mint-btn);color:var(--paper-d);font-size:14px;font-weight:600;padding:9px 20px;border-radius:var(--r-md);text-decoration:none;transition:background .15s}
+.nav-cta:hover{background:var(--mint-hover)}
+.nav-dd{position:relative}
+.nav-dd-trigger{display:inline-flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;font-family:'Geist',sans-serif;font-size:14px;color:var(--paper-sd);transition:color .15s;padding:0}
+.nav-dd-trigger:hover,.nav-dd.open .nav-dd-trigger{color:var(--paper-d)}
+.nav-dd-trigger svg{transition:transform .2s var(--ease)}
+.nav-dd:hover .nav-dd-trigger svg,.nav-dd.open .nav-dd-trigger svg{transform:rotate(180deg)}
+.nav-dd::after{content:'';position:absolute;top:100%;left:-20px;right:-20px;height:18px}
+.nav-dd-menu{position:absolute;top:calc(100% + 14px);left:0;transform:translateY(8px);width:820px;max-width:calc(100vw - 40px);display:grid;grid-template-columns:280px 1fr;overflow:hidden;background:rgba(24,23,20,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--stone-dark);border-radius:var(--r-lg);box-shadow:0 16px 48px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.03);opacity:0;visibility:hidden;z-index:120;transition:opacity .18s var(--ease),transform .18s var(--ease),visibility .18s}
+.dd-promo{display:flex;flex-direction:column;justify-content:center;padding:30px 28px;background:linear-gradient(180deg,rgba(16,185,129,.10),rgba(16,185,129,.03)),var(--pitch-3);border-right:1px solid var(--stone-dark)}
+.dd-promo h4{font-size:17px;font-weight:600;line-height:1.4;letter-spacing:-.015em;color:var(--paper-d);margin-bottom:14px}
+.dd-promo p{font-family:'Lexend',sans-serif;font-size:14px;line-height:1.6;color:var(--paper-sd);margin-bottom:22px}
+.dd-see{display:inline-flex;align-items:center;gap:7px;color:var(--mint);font-size:14px;font-weight:600;text-decoration:none}
+.dd-see svg{transition:transform .15s}
+.dd-see:hover svg{transform:translateX(3px)}
+.dd-list{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:12px;align-items:start}
+.nav-dd-menu .dd-item{padding:13px 15px;gap:14px}
+.nav-dd-menu .dd-ico{width:38px;height:38px;border-radius:9px}
+.nav-dd-menu .dd-ico svg{width:20px;height:20px}
+.nav-dd-menu .dd-tx{gap:3px}
+.nav-dd-menu .dd-t{font-size:15px}
+.nav-dd-menu .dd-d{font-size:13px;line-height:1.5}
+.dd-item{display:flex;align-items:flex-start;gap:12px;padding:10px 12px;border-radius:var(--r-md);text-decoration:none;transition:background .15s}
+.dd-item:hover{background:var(--pitch-3)}
+.dd-ico{width:32px;height:32px;flex-shrink:0;border-radius:8px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15);display:flex;align-items:center;justify-content:center;color:var(--mint)}
+.dd-tx{display:flex;flex-direction:column;gap:2px;min-width:0}
+.dd-t{font-size:13.5px;font-weight:600;color:var(--paper-d);letter-spacing:-.01em}
+.dd-d{font-size:12px;line-height:1.4;color:var(--paper-md)}
+.nav-dd:hover .nav-dd-menu,.nav-dd.open .nav-dd-menu{opacity:1;visibility:visible;transform:translateY(0)}
+.theme-toggle{width:36px;height:36px;border-radius:var(--r-md);border:1px solid var(--stone-dark);background:transparent;color:var(--paper-sd);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .15s,color .15s,background .15s;flex-shrink:0}
+.theme-toggle:hover{border-color:var(--paper-sd);color:var(--paper-d);background:rgba(255,255,255,.04)}
+/* Article */
+.article{max-width:720px;margin:0 auto;padding:120px 40px 24px}
+.a-back{display:inline-flex;align-items:center;gap:6px;font-family:'Geist Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--paper-md);text-decoration:none;margin-bottom:28px;transition:color .15s}
+.a-back:hover{color:var(--mint)}
+.a-cat{font-family:'Geist Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--mint)}
+.article h1{font-size:clamp(30px,4.4vw,46px);font-weight:800;letter-spacing:-.035em;line-height:1.08;color:var(--paper-d);margin:14px 0 16px}
+.a-meta{font-family:'Geist Mono',monospace;font-size:12px;color:var(--paper-md);letter-spacing:.04em;padding-bottom:32px;border-bottom:1px solid var(--stone-dark);margin-bottom:36px}
+/* Prose: this is where the article body styling lives */
+.prose{font-family:'Lexend',sans-serif;font-size:17px;line-height:1.8;font-weight:300;color:var(--paper-sd)}
+.prose p{margin-bottom:22px}
+.prose h2{font-family:'Geist',sans-serif;font-size:26px;font-weight:600;letter-spacing:-.02em;line-height:1.25;color:var(--paper-d);margin:44px 0 16px}
+.prose h3{font-family:'Geist',sans-serif;font-size:20px;font-weight:600;letter-spacing:-.015em;color:var(--paper-d);margin:32px 0 12px}
+.prose a{color:var(--mint);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.prose a:hover{color:var(--mint-soft,#34D399)}
+.prose ul,.prose ol{margin:0 0 22px 22px}
+.prose li{margin-bottom:9px}
+.prose blockquote{border-left:3px solid var(--mint);padding:4px 0 4px 20px;margin:0 0 22px;color:var(--paper-d);font-style:italic}
+.prose img{max-width:100%;height:auto;border-radius:var(--r-lg);margin:8px 0 22px;border:1px solid var(--stone-dark)}
+.prose hr{border:none;border-top:1px solid var(--stone-dark);margin:36px 0}
+/* Related features box */
+.related{max-width:720px;margin:48px auto 0;padding:0 40px}
+.related-box{background:var(--pitch-2);border:1px solid var(--stone-dark);border-radius:var(--r-xl);padding:26px 28px}
+.related-box .lbl{font-family:'Geist Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--mint);margin-bottom:16px}
+.related-link{display:flex;align-items:center;gap:13px;padding:11px 0;text-decoration:none;border-top:1px solid var(--stone-dark)}
+.related-link:first-of-type{border-top:none}
+.related-ic{width:34px;height:34px;flex-shrink:0;border-radius:9px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15);display:flex;align-items:center;justify-content:center;color:var(--mint)}
+.related-ic svg{width:18px;height:18px}
+.related-tx{min-width:0}
+.related-tx .t{font-size:14.5px;font-weight:600;color:var(--paper-d);letter-spacing:-.01em}
+.related-tx .d{font-family:'Lexend',sans-serif;font-size:12.5px;color:var(--paper-md);line-height:1.45}
+.related-link svg.arr{margin-left:auto;color:var(--paper-md);flex-shrink:0;transition:transform .15s,color .15s}
+.related-link:hover svg.arr{color:var(--mint);transform:translateX(3px)}
+/* CTA */
+.cta-band{background:var(--pitch);padding:88px 40px;text-align:center;position:relative;overflow:hidden;margin-top:56px}
+.cta-band::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 50% 100%,rgba(16,185,129,.07) 0%,transparent 70%);pointer-events:none}
+.cta-inner{max-width:560px;margin:0 auto;position:relative}
+.cta-inner h2{font-size:clamp(26px,4vw,38px);font-weight:700;letter-spacing:-.035em;line-height:1.1;color:var(--paper-d);margin-bottom:14px}
+.cta-inner h2 em{font-style:normal;color:var(--mint)}
+.cta-inner p{font-family:'Lexend',sans-serif;font-size:16px;font-weight:300;color:var(--paper-sd);margin-bottom:30px}
+.btn-p{display:inline-flex;align-items:center;gap:8px;background:var(--mint-btn);color:var(--paper-d);font-size:15px;font-weight:600;padding:13px 24px;border-radius:var(--r-md);text-decoration:none;transition:background .15s,transform .1s}
+.btn-p:hover{background:var(--mint-hover);transform:translateY(-1px)}
+/* Footer */
+footer{background:var(--pitch-2);border-top:1px solid var(--stone-dark);padding:48px 40px}
+.footer-i{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.footer-logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--paper-d)}
+.footer-wm{display:inline-flex;align-items:baseline;font-size:20px;font-weight:600;letter-spacing:-.045em}
+.footer-links{display:flex;gap:28px;flex-wrap:wrap}
+.footer-links a{font-size:13px;color:var(--paper-sd);text-decoration:none;transition:color .15s}
+.footer-links a:hover{color:var(--paper-d)}
+.footer-copy{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--stone-dark);text-transform:uppercase}
+/* Light mode */
+html.light{--pitch:#FFFFFF;--pitch-2:#F7F4ED;--pitch-3:#EFECE3;--stone-dark:#D4CFC2;--paper-d:#14130F;--paper-sd:#4A4845;--paper-md:#8A877F}
+html.light body{background:var(--paper);color:var(--ink)}
+html.light .nav{background:rgba(247,244,237,.92);border-bottom-color:var(--stone)}
+html.light .nav-wm{color:var(--ink)}
+html.light .nav-links a{color:var(--ink-muted)}
+html.light .nav-links a:hover,html.light .nav-links a.active{color:var(--ink)}
+html.light .nav-dd-trigger{color:var(--ink-muted)}
+html.light .nav-dd-trigger:hover,html.light .nav-dd.open .nav-dd-trigger{color:var(--ink)}
+html.light .nav-dd-menu{background:rgba(247,244,237,.98);border-color:var(--stone)}
+html.light .dd-item:hover{background:var(--paper-3)}
+html.light .dd-t{color:var(--ink)}
+html.light .dd-d{color:var(--ink-muted)}
+html.light .dd-promo{border-right-color:var(--stone);background:linear-gradient(180deg,rgba(16,185,129,.08),rgba(16,185,129,.025)),var(--paper-2)}
+html.light .dd-promo h4{color:var(--ink)}
+html.light .dd-promo p{color:var(--ink-soft)}
+html.light .dd-see{color:var(--mint-btn)}
+html.light .theme-toggle{border-color:var(--stone);color:var(--ink-muted)}
+html.light .theme-toggle:hover{border-color:var(--ink-muted);color:var(--ink);background:rgba(0,0,0,.04)}
+html.light .bg-grid-dark{background-image:linear-gradient(rgba(20,19,15,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(20,19,15,.022) 1px,transparent 1px)}
+html.light .prose a:hover{color:var(--mint-btn)}
+html.light .related-box{background:var(--paper-2);border-color:var(--stone)}
+html.light .related-link{border-top-color:var(--stone)}
+html.light .cta-band::before{display:none}
+html.light footer{background:var(--paper-2);border-top-color:var(--stone)}
+html.light .footer-wm{color:var(--ink)}
+html.light .footer-links a{color:var(--ink-soft)}
+html.light .footer-links a:hover{color:var(--ink)}
+html.light .footer-copy{color:var(--ink-muted)}
+/* Responsive */
+@media(max-width:1180px){.nav-dd-menu{grid-template-columns:1fr;width:380px}.dd-list{grid-template-columns:1fr}.dd-promo{border-right:none;border-bottom:1px solid var(--stone-dark);padding:24px 22px}html.light .dd-promo{border-bottom-color:var(--stone)}}
+@media(max-width:700px){.nav{padding:0 20px}.nav-links{display:none}.article{padding-left:24px;padding-right:24px}.related{padding-left:24px;padding-right:24px}.cta-band{padding-left:20px;padding-right:20px}footer{padding-left:20px;padding-right:20px}.footer-i{flex-direction:column;align-items:flex-start;gap:20px}}
+@media(max-width:440px){.nav-dd-menu{width:calc(100vw - 32px)}}
+</style>
+</head>
+<body class="bg-grid-dark">
+
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <svg width="28" height="28" viewBox="0 0 100 100" fill="none"><path d="M 78 22 Q 64 42, 50 50" stroke="#10B981" stroke-width="12" stroke-linecap="round"/><path d="M 78 78 Q 64 58, 50 50" stroke="#EDEAE3" stroke-width="12" stroke-linecap="round"/><path d="M 22 50 L 50 50" stroke="#EDEAE3" stroke-width="12" stroke-linecap="round"/></svg>
+    <span class="nav-wm">Effro<span class="wm-dot"></span></span>
+  </a>
+  <ul class="nav-links">
+    <li class="nav-dd">
+      <button class="nav-dd-trigger" aria-haspopup="true" aria-expanded="false">Features
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <div class="nav-dd-menu">
+        <div class="dd-promo">
+          <h4>A digital information management system designed for your exact needs.</h4>
+          <p>Store, search and retrieve so you don't have to rely on recall alone.</p>
+          <a class="dd-see" href="/#features">See all features <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+        </div>
+        <div class="dd-list">
+          <a class="dd-item" href="/features/smart-generate"><span class="dd-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M9 13a4.5 4.5 0 0 0 3-4"/><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/><path d="M3.477 10.896a4 4 0 0 1 .585-.396"/><path d="M6 18a4 4 0 0 1-1.967-.516"/><path d="M12 13h4"/><path d="M12 18h6a2 2 0 0 1 2 2v1"/><path d="M12 8h8"/><path d="M16 8V5a2 2 0 0 1 2-2"/><circle cx="16" cy="13" r=".5"/><circle cx="18" cy="3" r=".5"/><circle cx="20" cy="21" r=".5"/><circle cx="20" cy="8" r=".5"/></svg></span><span class="dd-tx"><span class="dd-t">Smart Generate</span><span class="dd-d">Drop in an email, PDF, or calendar invite and Effro pulls out the todos, decisions, and meetings for you to approve.</span></span></a>
+          <a class="dd-item" href="/features/areas-threads"><span class="dd-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="dd-tx"><span class="dd-t">Areas and Threads</span><span class="dd-d">Give every responsibility its own area, with threads for each line of work and entries that record what happened.</span></span></a>
+          <a class="dd-item" href="/features/signals"><span class="dd-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.07 4.93A10 10 0 0 0 6.99 3.34"/><path d="M4 6h.01"/><path d="M2.29 9.62A10 10 0 1 0 21.31 8.35"/><path d="M16.24 7.76A6 6 0 1 0 8.23 16.67"/><path d="M12 18h.01"/><path d="M17.99 11.66A6 6 0 0 1 15.77 16.67"/><circle cx="12" cy="12" r="2"/><path d="m13.41 10.59 5.66-5.66"/></svg></span><span class="dd-tx"><span class="dd-t">Signals</span><span class="dd-d">Outlook meetings and Jira issues arrive on their own, pre-sorted into the right area for you to accept or skip.</span></span></a>
+          <a class="dd-item" href="/features/insights"><span class="dd-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.065 12.493-6.18 1.318a.934.934 0 0 1-1.108-.702l-.537-2.15a1.07 1.07 0 0 1 .691-1.265l13.504-4.44"/><path d="m13.56 11.747 4.332-.924"/><path d="m16 21-3.105-6.21"/><path d="M16.485 5.94a2 2 0 0 1 1.455-2.425l1.09-.272a1 1 0 0 1 1.212.727l1.515 6.06a1 1 0 0 1-.727 1.213l-1.09.272a2 2 0 0 1-2.425-1.455z"/><path d="m6.158 8.633 1.114 4.456"/><path d="m8 21 3.105-6.21"/><circle cx="12" cy="13" r="2"/></svg></span><span class="dd-tx"><span class="dd-t">Insights</span><span class="dd-d">Your next meeting, what is due today, and the area going quiet, surfaced the moment you open the app.</span></span></a>
+          <a class="dd-item" href="/features/ai-overview-roundup"><span class="dd-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg></span><span class="dd-tx"><span class="dd-t">AI Overview and Roundup</span><span class="dd-d">A plain daily summary of every area, plus a one-click weekly digest you can edit and send on.</span></span></a>
+          <a class="dd-item" href="/features/private"><span class="dd-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><span class="dd-tx"><span class="dd-t">Private by default</span><span class="dd-d">Runs on your desktop with your own AI key. No cloud account, no subscription, nothing leaves your machine.</span></span></a>
+        </div>
+      </div>
+    </li>
+    <li><a href="/#how">How it works</a></li>
+    <li><a href="/resources" class="active">Resources</a></li>
+    <li><a href="/#faq">FAQ</a></li>
+  </ul>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode" title="Toggle theme">
+    <svg id="iconMoon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <svg id="iconSun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
+  <a href="https://github.com/Effroapp/effro/releases/latest" class="nav-cta">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+    Download Free
+  </a>
+</nav>
+
+<!-- ── ARTICLE ──────────────────────────────────────────────────────── -->
+<article class="article">
+  <a class="a-back" href="/resources">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+    All resources
+  </a>
+  <span class="a-cat">[Category, e.g. ADHD and executive function]</span>
+  <h1>[Your post title goes here]</h1>
+  <div class="a-meta">[Month DD, YYYY] · [5] min read</div>
+
+  <div class="prose">
+    <!-- ===== Write your article below. Use <h2> for sections, <h3> for sub-points,
+         <p> for paragraphs. Link to a feature with the mint links, for example:
+         <a href="/features/smart-generate">Smart Generate</a>. No em dashes, no bold. ===== -->
+
+    <p>[Open with a paragraph that hooks the reader and names the problem they have. This first line matters for both readers and search.]</p>
+
+    <h2>[A section heading]</h2>
+    <p>[Body paragraph. Where it fits naturally, link to a relevant Effro feature, for example <a href="/features/areas-threads">Areas and Threads</a>, so readers can go deeper and search engines see the connection.]</p>
+
+    <h3>[A sub-point]</h3>
+    <p>[More detail.]</p>
+    <ul>
+      <li>[A useful point]</li>
+      <li>[Another point]</li>
+    </ul>
+
+    <blockquote>[An optional pull quote or key takeaway.]</blockquote>
+
+    <h2>[Closing section]</h2>
+    <p>[Wrap up, and lead naturally into how Effro helps.]</p>
+  </div>
+</article>
+
+<!-- ── RELATED FEATURES (internal links help SEO and send readers deeper) ── -->
+<div class="related">
+  <div class="related-box">
+    <div class="lbl">Related in Effro</div>
+    <!-- Keep the 2 or 3 features most relevant to this post. Swap icons/text from any feature. -->
+    <a class="related-link" href="/features/smart-generate">
+      <span class="related-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M9 13a4.5 4.5 0 0 0 3-4"/><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/><path d="M3.477 10.896a4 4 0 0 1 .585-.396"/><path d="M6 18a4 4 0 0 1-1.967-.516"/><path d="M12 13h4"/><path d="M12 18h6a2 2 0 0 1 2 2v1"/><path d="M12 8h8"/><path d="M16 8V5a2 2 0 0 1 2-2"/><circle cx="16" cy="13" r=".5"/><circle cx="18" cy="3" r=".5"/><circle cx="20" cy="21" r=".5"/><circle cx="20" cy="8" r=".5"/></svg></span>
+      <span class="related-tx"><span class="t">Smart Generate</span><span class="d">Turn email, PDFs and invites into filed items.</span></span>
+      <svg class="arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </a>
+    <a class="related-link" href="/features/areas-threads">
+      <span class="related-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>
+      <span class="related-tx"><span class="t">Areas and Threads</span><span class="d">Organize every responsibility you carry.</span></span>
+      <svg class="arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- ── CTA ──────────────────────────────────────────────────────────── -->
+<section class="cta-band bg-grid-dark">
+  <div class="cta-inner">
+    <h2>Stay across <em>everything.</em></h2>
+    <p>Effro is the calm second brain for people juggling many responsibilities. Download it for Windows, free.</p>
+    <a href="https://github.com/Effroapp/effro/releases/latest" class="btn-p">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+      Download for Windows, Free
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-i">
+    <a href="/" class="footer-logo">
+      <svg width="22" height="22" viewBox="0 0 100 100" fill="none"><path d="M 78 22 Q 64 42, 50 50" stroke="#10B981" stroke-width="12" stroke-linecap="round"/><path d="M 78 78 Q 64 58, 50 50" stroke="#EDEAE3" stroke-width="12" stroke-linecap="round"/><path d="M 22 50 L 50 50" stroke="#EDEAE3" stroke-width="12" stroke-linecap="round"/></svg>
+      <span class="footer-wm">Effro<span class="wm-dot"></span></span>
+    </a>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/resources">Resources</a>
+      <a href="/#features">Features</a>
+      <a href="https://github.com/Effroapp/effro/releases/latest">Download</a>
+      <a href="/#waitlist">Mac waitlist</a>
+    </div>
+    <p class="footer-copy">© 2025 LKEOGH QA LTD · effro.io</p>
+  </div>
+</footer>
+
+<script>
+  const html=document.documentElement,toggle=document.getElementById('themeToggle'),iconMoon=document.getElementById('iconMoon'),iconSun=document.getElementById('iconSun')
+  function setTheme(m){if(m==='light'){html.classList.add('light');iconMoon.style.display='none';iconSun.style.display='block'}else{html.classList.remove('light');iconMoon.style.display='block';iconSun.style.display='none'}localStorage.setItem('effro-theme',m)}
+  setTheme(localStorage.getItem('effro-theme')||'dark')
+  toggle.addEventListener('click',()=>setTheme(html.classList.contains('light')?'dark':'light'))
+  document.querySelectorAll('.nav-dd').forEach(dd=>{const t=dd.querySelector('.nav-dd-trigger');t.addEventListener('click',e=>{e.stopPropagation();const o=dd.classList.toggle('open');t.setAttribute('aria-expanded',o)});document.addEventListener('click',e=>{if(!dd.contains(e.target)){dd.classList.remove('open');t.setAttribute('aria-expanded','false')}});document.addEventListener('keydown',e=>{if(e.key==='Escape'){dd.classList.remove('open');t.setAttribute('aria-expanded','false')}})})
+</script>
+</body>
+</html>

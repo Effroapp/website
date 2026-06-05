@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://effro.io/</loc><lastmod>2026-06-05</lastmod><priority>1.0</priority></url>
+  <url><loc>https://effro.io/features/smart-generate</loc><lastmod>2026-06-05</lastmod><priority>0.8</priority></url>
+  <url><loc>https://effro.io/features/areas-threads</loc><lastmod>2026-06-05</lastmod><priority>0.8</priority></url>
+  <url><loc>https://effro.io/features/signals</loc><lastmod>2026-06-05</lastmod><priority>0.8</priority></url>
+  <url><loc>https://effro.io/features/insights</loc><lastmod>2026-06-05</lastmod><priority>0.8</priority></url>
+  <url><loc>https://effro.io/features/ai-overview-roundup</loc><lastmod>2026-06-05</lastmod><priority>0.8</priority></url>
+  <url><loc>https://effro.io/features/private</loc><lastmod>2026-06-05</lastmod><priority>0.8</priority></url>
+  <url><loc>https://effro.io/resources</loc><lastmod>2026-06-05</lastmod><priority>0.7</priority></url>
+  <url><loc>https://effro.io/resources/adhd-burnout</loc><lastmod>2026-06-05</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <!-- Add each new article below, for example:
+  <url><loc>https://effro.io/resources/your-post-slug</loc><lastmod>2026-06-05</lastmod><priority>0.6</priority></url>
+  -->
+</urlset>
